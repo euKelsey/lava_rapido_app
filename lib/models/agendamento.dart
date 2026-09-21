@@ -2,6 +2,7 @@ import 'veiculo.dart';
 import 'servico.dart';
 
 class Agendamento {
+  int? id;
   Veiculo veiculo;
   List<Servico> servicos;
   String data;
@@ -12,6 +13,7 @@ class Agendamento {
   String? formaPagamento;
 
   Agendamento({
+    this.id,
     required this.veiculo,
     required this.servicos,
     required this.data,

@@ -1,13 +1,15 @@
 class Veiculo {
-    String marca;
-    String modelo;
-    String placa;
-    String cor;
+  int? id;
+  String marca;
+  String modelo;
+  String placa;
+  String cor;
 
-    Veiculo({
-        required this.marca,
-        required this.modelo,
-        required this.placa,
-        required this.cor,
-    });
+  Veiculo({
+    this.id,
+    required this.marca,
+    required this.modelo,
+    required this.placa,
+    required this.cor,
+  });
 }

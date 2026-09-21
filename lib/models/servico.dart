@@ -1,9 +1,10 @@
 class Servico {
+  int? id;
   String nome;
   double preco;
 
   Servico({
-    required this.nome,
-    required this.preco,
-  });
+    this.id, 
+    required this.nome, 
+    required this.preco});
 }
