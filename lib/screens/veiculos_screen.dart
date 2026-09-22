@@ -133,7 +133,7 @@ class _VeiculosScreenState extends State<VeiculosScreen>{
                                             });
                                         },
                                         icon: const Icon(Icons.add),
-                                        label:Text(
+                                        label: Text(
                                             mostrarFormulario ? 'Cancelar' : 'Adicionar Veículo',
                                         ),
                                     ),
@@ -141,7 +141,7 @@ class _VeiculosScreenState extends State<VeiculosScreen>{
 
                                 const SizedBox(height: 24),
 
-                                if(mostrarFormulario) ...[
+                                if (mostrarFormulario) ...[
                                     TextField(
                                         controller: placaController,
                                         decoration: const InputDecoration(

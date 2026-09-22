@@ -13,19 +13,27 @@ class _StatusServicoScreenState extends State<StatusServicoScreen> {
 
     @override
     Widget build(BuildContext context) {
+        List<Agendamento> agendamentosAtivos = agendamentos
+            .where(
+                (agendamento) =>
+                    agendamento.status != 'Finalizado' &&
+                    agendamento.status != 'Cancelado',
+            )
+            .toList();
+
         return Scaffold(
             appBar: AppBar(
                 title: const Text('Acompanhar Serviço'),
             ),
-            body: agendamentos.isEmpty
+            body: agendamentosAtivos.isEmpty
             ? const Center(
                 child: Text('Nenhum agendamento encontrado'),
                 )
             : ListView.builder(
                 padding: const EdgeInsets.all(16.0),
-                itemCount: agendamentos.length,
+                itemCount: agendamentosAtivos.length,
                 itemBuilder: (context, index) {
-                    Agendamento agendamento = agendamentos[index];
+                    Agendamento agendamento = agendamentosAtivos[index];
 
                     String nomesServicos = agendamento.servicos
                         .map((servico) => servico.nome)
@@ -45,6 +53,7 @@ class _StatusServicoScreenState extends State<StatusServicoScreen> {
                                 'Status: ${agendamento.status}\n'
                                 'Valor: R\$ ${agendamento.valorTotal.toStringAsFixed(2)}',
                             ),
+                            trailing: const Icon(Icons.chevron_right),
                             onTap: () {
                                 _abrirDetalhes(agendamento);
                             },
@@ -150,10 +159,55 @@ class _StatusServicoScreenState extends State<StatusServicoScreen> {
                         ),
                     ),
                     actions: [
-                        TextButton(
-                            onPressed: () {
-                                Navigator.pop(context);
-                            },
+                        if (agendamento.status == 'Agendado')
+                            TextButton(
+                                onPressed: () async {
+                                    bool? confirmarCancelamento = await showDialog<bool>(
+                                        context: context,
+                                        builder: (context) {
+                                            return AlertDialog(
+                                                title: const Text('Cancelar Agendamento'),
+                                                content: const Text(
+                                                    'Tem certeza que deseja cancelar este agendamento?',
+                                                ),
+                                                actions: [
+                                                    TextButton(
+                                                        onPressed: () {
+                                                            Navigator.pop(context, false);
+                                                        },
+                                                        child: const Text('Não'),
+                                                    ),
+                                                    ElevatedButton(
+                                                        onPressed: () {
+                                                            Navigator.pop(context, true);
+                                                        },
+                                                        child: const Text('Sim, cancelar'),
+                                                    ),
+                                                ],
+                                            );
+                                        },
+                                    );
+
+                                    if (confirmarCancelamento == true) {
+                                        setState(() {
+                                            agendamento.status = 'Cancelado';
+                                        });
+
+                                        Navigator.pop(context);
+
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content: Text('Agendamento cancelado com sucesso!'),
+                                            ),
+                                        );
+                                    }
+                                },
+                                child: const Text('Cancelar Agendamento'),
+                            ),
+                                    TextButton(
+                                        onPressed: () {
+                                            Navigator.pop(context);
+                                        },
                             child: const Text('Fechar'),
                         ),
                     ],

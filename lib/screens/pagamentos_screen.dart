@@ -13,7 +13,11 @@ class _PagamentosScreenState extends State<PagamentosScreen> {
 
   List<Agendamento> get pagamentosPendentes {
     return agendamentos
-      .where((agendamento) => !agendamento.pago)
+      .where(
+        (agendamento) => 
+          !agendamento.pago &&
+          agendamento.status != 'Cancelado'
+        )
       .toList();
   }
 
@@ -29,7 +33,7 @@ class _PagamentosScreenState extends State<PagamentosScreen> {
       appBar: AppBar(
         title: const Text('Pagamentos'),
       ),
-      body: agendamentos.isEmpty
+      body: pagamentosPendentes.isEmpty && pagamentosPagos.isEmpty
           ? const Center(
             child: Text('Nenhum pagamento disponível'),
           )

@@ -93,15 +93,15 @@ class _MeuCadastroScreenState extends State<MeuCadastroScreen> {
                                             String cpf = cpfController.text.trim();
 
                                             if (nome.isEmpty ||
-                                            telefone.isEmpty ||
-                                            email.isEmpty ||
-                                            cpf.isEmpty) {
-                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                    const SnackBar(
-                                                        content: Text('Preencha todos os campos'),
-                                                    ),
-                                                );
-                                            } else {
+                                                telefone.isEmpty ||
+                                                email.isEmpty ||
+                                                cpf.isEmpty) {
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                        const SnackBar(
+                                                            content: Text('Preencha todos os campos'),
+                                                        ),
+                                                    );
+                                                } else {
                                                 ScaffoldMessenger.of(context).showSnackBar(
                                                     const SnackBar(
                                                         content: Text('Dados atualizados com sucesso!'),

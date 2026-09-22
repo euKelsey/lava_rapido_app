@@ -5,6 +5,7 @@ import 'agendamento_screen.dart';
 import 'status_servico_screen.dart';
 import 'pagamentos_screen.dart';
 import 'login_screen.dart';
+import 'historico_servicos_screen.dart';
 
 class HomeScreen extends StatelessWidget {
     const HomeScreen({super.key});
@@ -16,6 +17,7 @@ class HomeScreen extends StatelessWidget {
                 title: const Text('Lava Rápido'),
                 actions: [
                     IconButton(
+                        tooltip: 'Sair',
                         onPressed: () {
                             Navigator.pushReplacement(
                                 context,
@@ -56,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                                 child: const Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                        Icon(Icons.people),
+                                        Icon(Icons.person),
                                         SizedBox(width: 8),
                                         Text('Meu Cadastro'),
                                     ],
@@ -135,6 +137,30 @@ class HomeScreen extends StatelessWidget {
                                 ),
                             ),
                         ),
+
+                        const SizedBox(height: 16),
+
+                        SizedBox(
+                            width: 250,
+                            child: ElevatedButton(
+                                onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => const HistoricoServicosScreen(),
+                                            ),
+                                        );
+                                    },
+                                    child: const Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                            Icon(Icons.history),
+                                            SizedBox(width: 8),
+                                            Text('Histórico de Serviços'),
+                                        ],
+                                    ),
+                                ),
+                            ),
 
                         const SizedBox(height: 16),
 

@@ -30,6 +30,67 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
         return total;
     }
 
+    Future<void> _selecionarServicos() async {
+        List<Servico> servicosTemporarios = List.from(servicosSelecionados);
+
+        bool? confirmar = await showDialog<bool>(
+            context: context,
+            builder: (context) {
+                return StatefulBuilder(
+                    builder: (context, setStateDialog) {
+                        return AlertDialog(
+                            title: const Text('Selecionar Serviços'),
+                            content: SingleChildScrollView(
+                                child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: servicosDisponiveis.map((servico) {
+                                        return CheckboxListTile(
+                                            title: Text(servico.nome),
+                                            subtitle: Text(
+                                                'R\$ ${servico.preco.toStringAsFixed(2)}',
+                                            ),
+                                            value: servicosTemporarios.contains(servico),
+                                             onChanged: (bool? selecionado) {
+                                                setStateDialog(() {
+                                                    if (selecionado == true) {
+                                                        servicosTemporarios.add(servico);
+                                                    } else {
+                                                        servicosTemporarios.remove(servico);
+                                                    }
+                                                });
+                                            },
+                                        );
+                                    }).toList(),
+                                ),
+                            ),
+                            actions: [
+                            TextButton(
+                                onPressed: () {
+                                Navigator.pop(context, false);
+                                },
+                                child: const Text('Cancelar'),
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                Navigator.pop(context, true);
+                                },
+                                child: const Text('Confirmar'),
+                            ),
+                        ],
+                    );
+                },
+            );
+        },
+    );
+
+    if (confirmar == true) {
+        setState(() {
+            servicosSelecionados.clear();
+            servicosSelecionados.addAll(servicosTemporarios);
+        });
+    }
+}
+
     @override
     void dispose() {
     dataController.dispose();
@@ -51,6 +112,7 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                                 DropdownButtonFormField<Veiculo>(
+                                    value: veiculoSelecionado,
                                     decoration: const InputDecoration(
                                         labelText: 'Veículo',
                                         prefixIcon: Icon(Icons.directions_car),
@@ -72,35 +134,24 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                                 ),
                                 const SizedBox(height: 16),
 
-                                const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        'Serviços',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
+                                InkWell(
+                                    onTap: () {
+                                        _selecionarServicos();
+                                    },
+                                    child: InputDecorator(
+                                        decoration: const InputDecoration(
+                                            labelText: 'Serviços',
+                                            prefixIcon: Icon(Icons.local_car_wash),
+                                            suffixIcon: Icon(Icons.arrow_drop_down),
+                                            border: OutlineInputBorder(),
                                         ),
-                                    ),
-                                ),
-
-                                const SizedBox(height: 8),
-
-                                ...servicosDisponiveis.map(
-                                    (servico) => CheckboxListTile(
-                                        title: Text(servico.nome),
-                                        subtitle: Text(
-                                            'R\$ ${servico.preco.toStringAsFixed(2)}',
+                                        child: Text(
+                                        servicosSelecionados.isEmpty
+                                            ? 'Selecionar serviços'
+                                            : servicosSelecionados
+                                                .map((servico) => servico.nome)
+                                                .join(', '),
                                         ),
-                                        value: servicosSelecionados.contains(servico),
-                                        onChanged: (bool? selecionado) {
-                                            setState(() {
-                                                if (selecionado == true) {
-                                                    servicosSelecionados.add(servico);
-                                                } else {
-                                                    servicosSelecionados.remove(servico);
-                                                }
-                                            });
-                                        },
                                     ),
                                 ),
 
@@ -155,7 +206,7 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
 
                                 if (servicosSelecionados.isNotEmpty)
                                     Text(
-                                        'Valor total R\$ ${valorTotal.toStringAsFixed(2)}',
+                                        'Valor total: R\$ ${valorTotal.toStringAsFixed(2)}',
                                         style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
