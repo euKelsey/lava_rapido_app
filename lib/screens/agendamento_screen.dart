@@ -112,7 +112,7 @@ class _AgendamentoScreenState extends State<AgendamentoScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                                 DropdownButtonFormField<Veiculo>(
-                                    value: veiculoSelecionado,
+                                    initialValue: veiculoSelecionado,
                                     decoration: const InputDecoration(
                                         labelText: 'Veículo',
                                         prefixIcon: Icon(Icons.directions_car),

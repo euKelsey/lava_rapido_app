@@ -12,7 +12,7 @@ class LavaRapidoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Lava Rápido',
+      title: 'Fast Splash',
       home: const LoginScreen(),
     );
   }
