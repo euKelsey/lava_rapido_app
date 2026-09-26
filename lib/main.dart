@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'screens/login_screen.dart';
+import 'theme/theme_controller.dart';
 
 void main() {
   runApp(const LavaRapidoApp());
@@ -11,31 +12,36 @@ class LavaRapidoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Fast Splash',
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeModeNotifier,
+      builder: (context, themeMode, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Fast Splash',
 
-      themeMode: ThemeMode.system,
+          themeMode: themeMode,
 
-      theme: ThemeData(
-        brightness: Brightness.light,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
-          brightness: Brightness.light,
-        ),
-        useMaterial3: true,
-      ),
+          theme: ThemeData(
+            brightness: Brightness.light,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blue,
+              brightness: Brightness.light,
+            ),
+            useMaterial3: true,
+          ),
 
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
-          brightness: Brightness.dark,
-        ),
-        useMaterial3: true,
-      ),
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blue,
+              brightness: Brightness.dark,
+            ),
+            useMaterial3: true,
+          ),
 
-      home: const LoginScreen(),
+          home: const LoginScreen(),
+        );
+      },
     );
   }
 }
